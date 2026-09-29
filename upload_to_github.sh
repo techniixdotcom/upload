@@ -4,7 +4,7 @@ set -e
 # ---- Check that user is logged into git ----
 echo "Checking GitHub authentication..."
 if ! git ls-remote https://github.com/octocat/Hello-World.git HEAD &>/dev/null; then
-    echo "❌ You don't seem to be logged in to GitHub."
+    echo "You don't seem to be logged in to GitHub."
     echo "   Please configure git credentials (SSH key or PAT) first."
     exit 1
 fi
@@ -14,7 +14,7 @@ echo ""
 # ---- Ask for repository ----
 read -p "GitHub repository (user/repo or full URL): " REPO_INPUT
 if [ -z "$REPO_INPUT" ]; then
-    echo "❌ No repository given."
+    echo "No repository given."
     exit 1
 fi
 
@@ -26,7 +26,7 @@ elif [[ "$REPO_INPUT" =~ ^git@ ]]; then
 elif [[ "$REPO_INPUT" =~ ^[^/]+/[^/]+$ ]]; then
     REPO_URL="https://github.com/${REPO_INPUT}.git"
 else
-    echo "❌ Unrecognized repository format: '$REPO_INPUT'"
+    echo "Unrecognized repository format: '$REPO_INPUT'"
     exit 1
 fi
 echo "→ Will use: $REPO_URL"
@@ -41,7 +41,7 @@ read -p "Local folder to upload: " SOURCE_FOLDER
 SOURCE_FOLDER="${SOURCE_FOLDER/#\~/$HOME}"
 
 if [ ! -d "$SOURCE_FOLDER" ]; then
-    echo "❌ Folder '$SOURCE_FOLDER' does not exist."
+    echo "Folder '$SOURCE_FOLDER' does not exist."
     exit 1
 fi
 
@@ -77,7 +77,7 @@ else
         for p in "${PICKS[@]}"; do
             p=$(echo "$p" | xargs)
             if ! [[ "$p" =~ ^[0-9]+$ ]] || [ -z "${SUBDIRS[$p]}" ]; then
-                echo "❌ Invalid selection: '$p'"
+                echo "Invalid selection: '$p'"
                 exit 1
             fi
         done
@@ -99,7 +99,7 @@ TEMP_DIR=$(mktemp -d)
 echo ""
 echo "Cloning $REPO_URL ..."
 if ! git clone "$REPO_URL" "$TEMP_DIR"; then
-    echo "❌ Clone failed."
+    echo "Clone failed."
     rm -rf "$TEMP_DIR"
     exit 1
 fi
@@ -110,7 +110,7 @@ cd "$TEMP_DIR"
 if git show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
     git checkout "$BRANCH"
 else
-    echo "⚠ Branch '$BRANCH' doesn't exist on remote — creating it."
+    echo "Branch '$BRANCH' doesn't exist on remote — creating it."
     git checkout -b "$BRANCH"
 fi
 
